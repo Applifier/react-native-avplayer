@@ -6,12 +6,13 @@
 
 'use strict';
 
-var NativeVideo = require('NativeModules').AVPlayer;
-var React = require('react-native');
+var ReactNative = require('react-native');
+var NativeVideo = require('react-native').NativeModules.AVPlayer;
+var React = require('react');
 var EventEmitter = require('eventemitter3');
 var {
   DeviceEventEmitter
-} = React;
+} = ReactNative;
 
 function guid() {
   function s4() {

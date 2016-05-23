@@ -6,8 +6,9 @@
  'use strict';
 
  var _ = require('lodash');
- var React = require('react-native');
- var {View} = React;
+ var ReactNative = require('react-native');
+ var React = require('react');
+ var {View} = ReactNative;
 
  var AVVideo = React.createClass({
    render: function() {
