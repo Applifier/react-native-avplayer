@@ -7,8 +7,9 @@
 'use strict';
 
 var ReactNative = require('react-native');
+var React = require('react');
 var { StyleSheet, requireNativeComponent, NativeModules } = ReactNative;
-var PropTypes = require('react').PropTypes;
+var PropTypes = React.PropTypes;
 
 var VideoResizeMode = require('./AVPlayerLayerResizeMode');
 var { extend } = require('lodash');
