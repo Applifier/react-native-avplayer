@@ -209,9 +209,12 @@ static NSString *const playbackLikelyToKeepUpKeyPath = @"playbackLikelyToKeepUp"
         if (isnan(duration)) {
           duration = 0.0;
         }
+        CGSize size = _playerItem.presentationSize;
         [_eventDispatcher sendDeviceEventWithName:@"onVideoLoad"
                                             body:@{@"duration": [NSNumber numberWithFloat:duration],
                                                    @"currentTime": [NSNumber numberWithFloat:CMTimeGetSeconds(_playerItem.currentTime)],
+                                                   @"height": @(size.height),
+                                                   @"width": @(size.width),
                                                    @"canPlayReverse": [NSNumber numberWithBool:_playerItem.canPlayReverse],
                                                    @"canPlayFastForward": [NSNumber numberWithBool:_playerItem.canPlayFastForward],
                                                    @"canPlaySlowForward": [NSNumber numberWithBool:_playerItem.canPlaySlowForward],
