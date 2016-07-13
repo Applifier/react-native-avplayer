@@ -123,6 +123,7 @@ RCT_EXPORT_METHOD(removePlayer:(NSString*)playerUuid withCallback:(RCTResponseSe
         callback(@[@"ERROR: Player with uuid not found!"]);
         return;
     }
+    [_players[playerUuid] invalidate];
     [_players removeObjectForKey:playerUuid];
     callback(@[[NSNull null], playerUuid]);
 }
@@ -135,6 +136,15 @@ RCT_EXPORT_METHOD(removePlayer:(NSString*)playerUuid withCallback:(RCTResponseSe
         return nil;
     }
     return _players[playerUuid];
+}
+
+-(void)invalidate
+{
+    for (NSString* playerUuid in _players)
+    {
+        [_players[playerUuid] invalidate];
+    }
+    _players = nil;
 }
 
 @end

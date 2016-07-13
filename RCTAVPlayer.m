@@ -369,6 +369,11 @@ static NSString *const playbackLikelyToKeepUpKeyPath = @"playbackLikelyToKeepUp"
 
 #pragma mark - Lifecycle
 
+-(void)invalidate
+{
+    [self stopProgressTimer];
+}
+
 -(void)dealloc
 {
   [_progressUpdateTimer invalidate];
