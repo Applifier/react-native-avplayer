@@ -17,4 +17,5 @@
 -(void)applyModifiers;
 -(void)setRepeat:(BOOL)repeat;
 -(AVPlayer*)getAVPlayer;
+-(void)invalidate;
 @end
