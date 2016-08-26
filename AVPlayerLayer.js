@@ -8,7 +8,7 @@
 
 var ReactNative = require('react-native');
 var React = require('react');
-var { StyleSheet, requireNativeComponent, NativeModules } = ReactNative;
+var { StyleSheet, requireNativeComponent, NativeModules, View } = ReactNative;
 var PropTypes = React.PropTypes;
 
 var VideoResizeMode = require('./AVPlayerLayerResizeMode');
@@ -18,6 +18,7 @@ var VIDEO_REF = 'video';
 
 var AVPlayerLayer = React.createClass({
   propTypes: {
+    ...View.propTypes,
     /* Wrapper component */
     resizeMode: PropTypes.string,
     playerUuid: PropTypes.string,
