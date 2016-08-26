@@ -33,13 +33,13 @@ var AVPlayerLayer = React.createClass({
 
     var resizeMode;
     if (this.props.resizeMode === VideoResizeMode.stretch) {
-      resizeMode = NativeModules.AVPlayerLayerManager.ScaleToFill;
+      resizeMode = NativeModules.UIManager.RCTAVPlayerLayer.ScaleToFill;
     } else if (this.props.resizeMode === VideoResizeMode.contain) {
-      resizeMode = NativeModules.AVPlayerLayerManager.ScaleAspectFit;
+      resizeMode = NativeModules.UIManager.RCTAVPlayerLayer.ScaleAspectFit;
     } else if (this.props.resizeMode === VideoResizeMode.cover) {
-      resizeMode = NativeModules.AVPlayerLayerManager.ScaleAspectFill;
+      resizeMode = NativeModules.UIManager.RCTAVPlayerLayer.ScaleAspectFill;
     } else {
-      resizeMode = NativeModules.AVPlayerLayerManager.ScaleNone;
+      resizeMode = NativeModules.UIManager.RCTAVPlayerLayer.ScaleNone;
     }
     var player = this.props.player;
     var playerUuid = player ? player.uuid : '';
