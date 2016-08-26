@@ -65,7 +65,7 @@ class AVPlayer extends EventEmitter {
     });
     this.rate = 1;
     this.volume = 1;
-    this.repeat = 1;
+    this.repeat = true;
     this.muted = false,
     this._source = null;
   }
