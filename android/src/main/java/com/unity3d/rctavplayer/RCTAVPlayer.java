@@ -124,6 +124,7 @@ public class RCTAVPlayer implements MediaPlayer.OnPreparedListener,
         boolean isAsset = source.getBoolean(PROP_SRC_IS_ASSET);
         String uri = source.getString(PROP_SRC_URI);
         String type = source.getString(PROP_SRC_TYPE);
+        Log.d(TAG, "Trying to open file from URI: " + uri);
 
         mMediaPlayer.reset();
         mMediaPlayerValid = false;
@@ -167,7 +168,7 @@ public class RCTAVPlayer implements MediaPlayer.OnPreparedListener,
         }
         catch (Exception e)
         {
-            e.printStackTrace();
+            Log.e(TAG, "Error loading video - " + e.getMessage());
             return;
         }
 
@@ -202,6 +203,7 @@ public class RCTAVPlayer implements MediaPlayer.OnPreparedListener,
         {
             if (mMediaPlayer.isPlaying())
             {
+                Log.d(TAG, "Pausing playback");
                 mMediaPlayer.pause();
             }
         }
@@ -209,6 +211,7 @@ public class RCTAVPlayer implements MediaPlayer.OnPreparedListener,
         {
             if (!mMediaPlayer.isPlaying())
             {
+                Log.d(TAG, "Starting playback");
                 mMediaPlayer.start();
             }
         }
@@ -234,6 +237,7 @@ public class RCTAVPlayer implements MediaPlayer.OnPreparedListener,
 
     public void setRate(float rate)
     {
+        Log.d(TAG, "Setting rate " + mRate + " -> " + rate);
         mRate = rate;
         if (mMediaPlayerValid)
         {
@@ -313,12 +317,14 @@ public class RCTAVPlayer implements MediaPlayer.OnPreparedListener,
     @Override
     public void onCompletion(MediaPlayer mp)
     {
+        Log.d(TAG, "Completed playing media");
         mIsCompleted = true;
     }
 
     @Override
     public boolean onError(MediaPlayer mp, int what, int extra)
     {
+        Log.e(TAG, "Error playing media. Code: " + what + " " + extra);
         mMediaPlayerValid = false;
         WritableMap error = Arguments.createMap();
         error.putInt(EVENT_PROP_WHAT, what);
@@ -332,6 +338,7 @@ public class RCTAVPlayer implements MediaPlayer.OnPreparedListener,
     @Override
     public void onPrepared(MediaPlayer mp)
     {
+        Log.d(TAG, "Media prepared for playing");
         mMediaPlayerValid = true;
         mVideoDuration = mp.getDuration();
 
