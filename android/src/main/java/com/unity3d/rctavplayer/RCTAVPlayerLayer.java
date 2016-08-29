@@ -68,6 +68,12 @@ public class RCTAVPlayerLayer extends ScalableVideoView implements RCTAVPlayer.L
         setResizeModeModifier(mResizeMode);
     }
 
+    @Override
+    public void onDestroyed()
+    {
+        mMediaPlayer = null;
+    }
+
     public void setResizeModeModifier(final ScalableType resizeMode)
     {
         mResizeMode = resizeMode;

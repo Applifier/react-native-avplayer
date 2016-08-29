@@ -30,6 +30,7 @@ public class RCTAVPlayer implements MediaPlayer.OnPreparedListener,
     public interface Listener
     {
         void onPrepared(RCTAVPlayer player);
+        void onDestroyed();
     }
 
     private MediaPlayer mMediaPlayer = null;
@@ -277,7 +278,11 @@ public class RCTAVPlayer implements MediaPlayer.OnPreparedListener,
 
     public void invalidate()
     {
-        //TODO
+
+        for (Listener l: mListeners)
+        {
+            l.onDestroyed();
+        }
     }
 
     public void addListener(Listener listener)
