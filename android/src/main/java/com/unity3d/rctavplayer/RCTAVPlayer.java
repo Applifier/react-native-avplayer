@@ -278,6 +278,10 @@ public class RCTAVPlayer implements MediaPlayer.OnPreparedListener,
 
     public void invalidate()
     {
+        mMediaPlayerValid = false;
+        mMediaPlayer.release();
+        mMediaPlayer = null;
+        mProgressUpdateHandler.removeCallbacks(mProgressUpdateRunnable);
 
         for (Listener l: mListeners)
         {
@@ -305,6 +309,7 @@ public class RCTAVPlayer implements MediaPlayer.OnPreparedListener,
     @Override
     public boolean onError(MediaPlayer mp, int what, int extra)
     {
+        mMediaPlayerValid = false;
         WritableMap error = Arguments.createMap();
         error.putInt(EVENT_PROP_WHAT, what);
         error.putInt(EVENT_PROP_EXTRA, extra);
