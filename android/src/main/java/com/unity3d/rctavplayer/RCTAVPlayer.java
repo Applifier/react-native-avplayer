@@ -237,8 +237,18 @@ public class RCTAVPlayer implements MediaPlayer.OnPreparedListener,
         mRate = rate;
         if (mMediaPlayerValid)
         {
-            // TODO: Implement this.
-            Log.e(TAG, "Setting playback rate is not yet supported on Android");
+            if (rate == 1.0f)
+            {
+                setPaused(false);
+            }
+            else if (rate == 0.0f)
+            {
+                setPaused(true);
+            }
+            else
+            {
+                Log.w(TAG, "Setting playback rate is not yet supported on Android");
+            }
         }
     }
 
