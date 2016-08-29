@@ -1,7 +1,5 @@
 package com.unity3d.rctavplayer;
 
-import android.util.Log;
-
 import com.facebook.react.ReactPackage;
 import com.facebook.react.bridge.JavaScriptModule;
 import com.facebook.react.bridge.NativeModule;
@@ -13,7 +11,7 @@ import java.util.Collections;
 import java.util.List;
 
 /**
- * Created by ustun on 24/08/16.
+ * Created by Üstün Ergenoglu on 24/08/16.
  */
 public class RCTAVPlayerPackage implements ReactPackage
 {
