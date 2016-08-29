@@ -87,12 +87,6 @@ public class RCTAVPlayerLayer extends ScalableVideoView implements RCTAVPlayer.L
                 public void run()
                 {
                     setScalableType(resizeMode);
-                    //HACK: For some reason, need to flip the videos vertically here.
-                    Matrix m = new Matrix();
-                    getTransform(m);
-                    m.postScale(1.0f, -1.0f, 0.0f, getHeight());
-                    setTransform(m);
-                    invalidate();
                 }
             });
         }
