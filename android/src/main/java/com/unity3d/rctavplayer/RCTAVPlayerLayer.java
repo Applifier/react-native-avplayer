@@ -1,11 +1,11 @@
 package com.unity3d.rctavplayer;
 
-import android.graphics.Matrix;
+import android.graphics.SurfaceTexture;
 import android.media.MediaPlayer;
 import android.util.Log;
+import android.view.Surface;
 
 import com.facebook.react.uimanager.ThemedReactContext;
-import com.facebook.react.uimanager.events.RCTEventEmitter;
 import com.yqritc.scalablevideoview.ScalableType;
 import com.yqritc.scalablevideoview.ScalableVideoView;
 
@@ -17,9 +17,8 @@ public class RCTAVPlayerLayer extends ScalableVideoView implements RCTAVPlayer.L
     private static final String TAG = RCTAVPlayerLayer.class.getSimpleName();
 
     private ThemedReactContext mThemedReactContext = null;
-    private RCTEventEmitter mEventEmitter = null;
     private ScalableType mResizeMode = ScalableType.FIT_XY;
-    private boolean mMediaPlayerValid = false;
+    private RCTAVPlayer mAVPlayer = null;
 
     public enum Events
     {
@@ -47,25 +46,36 @@ public class RCTAVPlayerLayer extends ScalableVideoView implements RCTAVPlayer.L
     public RCTAVPlayerLayer(ThemedReactContext themedReactContext)
     {
         super(themedReactContext);
+        Log.d(TAG, "Created layer " + this);
 
         mThemedReactContext = themedReactContext;
-        mEventEmitter = mThemedReactContext.getJSModule(RCTEventEmitter.class);
 
         setSurfaceTextureListener(this);
     }
 
     @Override
+    public String toString()
+    {
+        return Integer.toHexString(System.identityHashCode(this));
+    }
+
+    @Override
     protected void onDetachedFromWindow()
     {
-        mMediaPlayerValid = false;
-
+        mMediaPlayer = null;
         super.onDetachedFromWindow();
+    }
+
+    @Override
+    protected void onAttachedToWindow()
+    {
+        mMediaPlayer = mAVPlayer.getMediaPlayer();
+        super.onAttachedToWindow();
     }
 
     @Override
     public void onPrepared(RCTAVPlayer player)
     {
-        mMediaPlayerValid = true;
         setResizeModeModifier(mResizeMode);
     }
 
@@ -79,7 +89,7 @@ public class RCTAVPlayerLayer extends ScalableVideoView implements RCTAVPlayer.L
     {
         mResizeMode = resizeMode;
 
-        if (mMediaPlayerValid)
+        if (mAVPlayer.getMediaPlayerValid())
         {
             mThemedReactContext.runOnUiQueueThread(new Runnable()
             {
@@ -99,12 +109,15 @@ public class RCTAVPlayerLayer extends ScalableVideoView implements RCTAVPlayer.L
 
     public void setPlayerUuid(String uuid)
     {
+        Log.d(TAG, "Setting player with uuid " + uuid + " to layer " + this);
         RCTAVPlayer avPlayer = RCTAVPlayerModule.getPlayer(uuid);
         if (avPlayer == null)
         {
             Log.e(TAG, "Cannot find player with uuid: " + uuid);
             return;
         }
+
+        mAVPlayer = avPlayer;
 
         MediaPlayer mp = avPlayer.getMediaPlayer();
         setPlayer(mp);

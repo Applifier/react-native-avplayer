@@ -38,6 +38,7 @@ public class RCTAVPlayerModule extends ReactContextBaseJavaModule
     @ReactMethod
     public void createVideoPlayer(String uuid)
     {
+        Log.d(TAG, "Creating player with uuid: " + uuid);
         RCTAVPlayer avPlayer = new RCTAVPlayer(mContext);
         avPlayer.setUuid(uuid);
         mPlayers.put(uuid, avPlayer);
@@ -154,6 +155,8 @@ public class RCTAVPlayerModule extends ReactContextBaseJavaModule
     @ReactMethod
     public void removePlayer(String playerUuid, Callback callback)
     {
+        Log.d(TAG, "Removing player with uuid: " + playerUuid);
+
         RCTAVPlayer avPlayer = mPlayers.get(playerUuid);
         WritableArray result = Arguments.createArray();
         if (avPlayer == null)
@@ -183,6 +186,8 @@ public class RCTAVPlayerModule extends ReactContextBaseJavaModule
 
     public void invalidate()
     {
+        Log.d(TAG, "Invalidating RCTAVPlayerModule " + this);
+
         for (Map.Entry<String, RCTAVPlayer> entry : mPlayers.entrySet())
         {
             entry.getValue().invalidate();

@@ -41,8 +41,6 @@ public class RCTAVPlayer implements MediaPlayer.OnPreparedListener,
 
     private boolean mPaused = false;
     private boolean mRepeat = false;
-    private float mPendingSeekTime = 0f;
-    private boolean mPendingSeek = false;
     private float mRate = 0f;
     private boolean mMuted = false;
     private float mVolume = 0f;
@@ -108,6 +106,17 @@ public class RCTAVPlayer implements MediaPlayer.OnPreparedListener,
         mProgressUpdateHandler.post(mProgressUpdateRunnable);
     }
 
+    @Override
+    public String toString()
+    {
+        StringBuilder sb = new StringBuilder();
+        sb.append("RCTAVPlayer");
+        sb.append(" uuid: ");
+        sb.append(mUuid);
+
+        return sb.toString();
+    }
+
     public void setUuid(String uuid)
     {
         mUuid = uuid;
@@ -118,6 +127,11 @@ public class RCTAVPlayer implements MediaPlayer.OnPreparedListener,
         return mUuid;
     }
 
+    public boolean getMediaPlayerValid()
+    {
+        return mMediaPlayerValid;
+    }
+
     public void setSource(ReadableMap source)
     {
         boolean isNetwork = source.getBoolean(PROP_SRC_IS_NETWORK);
@@ -126,8 +140,8 @@ public class RCTAVPlayer implements MediaPlayer.OnPreparedListener,
         String type = source.getString(PROP_SRC_TYPE);
         Log.d(TAG, "Trying to open file from URI: " + uri);
 
-        mMediaPlayer.reset();
         mMediaPlayerValid = false;
+        mMediaPlayer.reset();
         mVideoBufferedDuration = 0;
         mVideoDuration = 0;
 
@@ -196,6 +210,7 @@ public class RCTAVPlayer implements MediaPlayer.OnPreparedListener,
 
         if (!mMediaPlayerValid)
         {
+            Log.w(TAG, "setPaused(" + paused + ") called with invalid media player");
             return;
         }
 
@@ -237,7 +252,7 @@ public class RCTAVPlayer implements MediaPlayer.OnPreparedListener,
 
     public void setRate(float rate)
     {
-        Log.d(TAG, "Setting rate " + mRate + " -> " + rate);
+        Log.d(TAG, "Setting rate " + mRate + " -> " + rate + "(" + mUuid + ")");
         mRate = rate;
         if (mMediaPlayerValid)
         {
@@ -292,6 +307,7 @@ public class RCTAVPlayer implements MediaPlayer.OnPreparedListener,
 
     public void invalidate()
     {
+        Log.d(TAG, "Invalidating RCTAVPlayerLayer " + mUuid);
         mMediaPlayerValid = false;
         mMediaPlayer.release();
         mMediaPlayer = null;
@@ -317,14 +333,14 @@ public class RCTAVPlayer implements MediaPlayer.OnPreparedListener,
     @Override
     public void onCompletion(MediaPlayer mp)
     {
-        Log.d(TAG, "Completed playing media");
+        Log.d(TAG, "Completed playing media " + mUuid);
         mIsCompleted = true;
     }
 
     @Override
     public boolean onError(MediaPlayer mp, int what, int extra)
     {
-        Log.e(TAG, "Error playing media. Code: " + what + " " + extra);
+        Log.e(TAG, "Error playing media. Code: " + what + " " + extra + " player uuid: " + mUuid);
         mMediaPlayerValid = false;
         WritableMap error = Arguments.createMap();
         error.putInt(EVENT_PROP_WHAT, what);
@@ -338,7 +354,7 @@ public class RCTAVPlayer implements MediaPlayer.OnPreparedListener,
     @Override
     public void onPrepared(MediaPlayer mp)
     {
-        Log.d(TAG, "Media prepared for playing");
+        Log.d(TAG, "Media prepared for playing " + mUuid);
         mMediaPlayerValid = true;
         mVideoDuration = mp.getDuration();
 
