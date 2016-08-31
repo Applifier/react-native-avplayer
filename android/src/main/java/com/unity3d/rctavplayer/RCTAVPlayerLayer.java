@@ -1,9 +1,7 @@
 package com.unity3d.rctavplayer;
 
-import android.graphics.SurfaceTexture;
 import android.media.MediaPlayer;
 import android.util.Log;
-import android.view.Surface;
 
 import com.facebook.react.uimanager.ThemedReactContext;
 import com.yqritc.scalablevideoview.ScalableType;
