@@ -89,12 +89,22 @@ public class RCTAVPlayerLayer extends ScalableVideoView implements RCTAVPlayer.L
 
         if (mAVPlayer.getMediaPlayerValid())
         {
+            Log.d(TAG, "setResizeModifier " + mAVPlayer);
             mThemedReactContext.runOnUiQueueThread(new Runnable()
             {
                 @Override
                 public void run()
                 {
-                    setScalableType(resizeMode);
+                    // If mMediaPlayer becomes null when scrolling fast enough and this is not yet
+                    // run.
+                    if (mMediaPlayer != null)
+                    {
+                        setScalableType(resizeMode);
+                    }
+                    else
+                    {
+                        Log.w(TAG, "mMediaPlayer became null before getting ready...");
+                    }
                 }
             });
         }
