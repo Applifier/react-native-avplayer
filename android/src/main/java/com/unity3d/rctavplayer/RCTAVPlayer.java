@@ -220,6 +220,7 @@ public class RCTAVPlayer implements MediaPlayer.OnPreparedListener,
             {
                 Log.d(TAG, "Pausing playback");
                 mMediaPlayer.pause();
+                mIsCompleted = true;
             }
         }
         else
@@ -228,6 +229,8 @@ public class RCTAVPlayer implements MediaPlayer.OnPreparedListener,
             {
                 Log.d(TAG, "Starting playback");
                 mMediaPlayer.start();
+                mMediaPlayer.setOnCompletionListener(this);
+                mIsCompleted = false;
             }
         }
     }
@@ -293,11 +296,6 @@ public class RCTAVPlayer implements MediaPlayer.OnPreparedListener,
         {
             mMediaPlayer.setVolume(mVolume, mVolume);
         }
-
-        if (mMediaPlayerValid)
-        {
-            mMediaPlayer.setLooping(mRepeat);
-        }
     }
 
     public MediaPlayer getMediaPlayer()
@@ -333,8 +331,19 @@ public class RCTAVPlayer implements MediaPlayer.OnPreparedListener,
     @Override
     public void onCompletion(MediaPlayer mp)
     {
-        Log.d(TAG, "Completed playing media " + mUuid);
-        mIsCompleted = true;
+        if (mRepeat)
+        {
+            mMediaPlayer.start();
+        }
+        else
+        {
+            mIsCompleted = true;
+        }
+
+        WritableMap event = Arguments.createMap();
+        event.putString(EVENT_PROP_TARGET, mUuid);
+
+        mDeviceEventEmitter.emit(RCTAVPlayerLayer.Events.EVENT_END.toString(), event);
     }
 
     @Override
