@@ -389,5 +389,9 @@ public class RCTAVPlayer implements MediaPlayer.OnPreparedListener,
         {
             l.onPrepared(this);
         }
+
+        // To set the preview in the window
+        setPaused(false);
+        setPaused(true);
     }
 }

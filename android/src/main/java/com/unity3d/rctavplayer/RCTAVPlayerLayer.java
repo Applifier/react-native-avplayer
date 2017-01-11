@@ -70,6 +70,12 @@ public class RCTAVPlayerLayer extends ScalableVideoView implements RCTAVPlayer.L
     {
         mMediaPlayer = mAVPlayer.getMediaPlayer();
         super.onAttachedToWindow();
+
+        // To set the preview in the window
+        if (!mMediaPlayer.isPlaying())
+        {
+            mMediaPlayer.seekTo(50);
+        }
     }
 
     @Override
