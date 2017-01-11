@@ -1,5 +1,6 @@
 package com.unity3d.rctavplayer;
 
+import android.graphics.SurfaceTexture;
 import android.media.MediaPlayer;
 import android.util.Log;
 
@@ -69,6 +70,14 @@ public class RCTAVPlayerLayer extends ScalableVideoView implements RCTAVPlayer.L
     {
         mMediaPlayer = mAVPlayer.getMediaPlayer();
         super.onAttachedToWindow();
+    }
+
+    @Override
+    public void onSurfaceTextureSizeChanged(SurfaceTexture surface, int width, int height)
+    {
+        super.onSurfaceTextureSizeChanged(surface, width, height);
+
+        setResizeModeModifier(mResizeMode);
     }
 
     @Override
