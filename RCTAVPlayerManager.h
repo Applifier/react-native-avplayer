@@ -1,6 +1,6 @@
-#import "RCTBridgeModule.h"
+#import <React/RCTBridgeModule.h>
 #import "RCTAVPlayer.h"
-#import "RCTInvalidating.h"
+#import <React/RCTInvalidating.h>
 
 @interface RCTAVPlayerManager : NSObject <RCTBridgeModule, RCTInvalidating>
 

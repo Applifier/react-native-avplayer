@@ -1,6 +1,6 @@
 #import "RCTAVPlayerLayerManager.h"
 #import "RCTAVPlayerLayer.h"
-#import "RCTBridge.h"
+#import <React/RCTBridge.h>
 #import <AVFoundation/AVFoundation.h>
 
 @implementation RCTAVPlayerLayerManager
