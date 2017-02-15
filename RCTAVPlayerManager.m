@@ -1,7 +1,7 @@
 #import "RCTAVPlayerManager.h"
 #import "RCTAVPlayer.h"
-#import "RCTBridge.h"
-#import "RCTEventDispatcher.h"
+#import <React/RCTBridge.h>
+#import <React/RCTEventDispatcher.h>
 #import <AVFoundation/AVFoundation.h>
 
 @implementation RCTAVPlayerManager
