@@ -127,7 +127,7 @@ public class RCTAVPlayer implements MediaPlayer.OnPreparedListener,
         return mUuid;
     }
 
-    public boolean getMediaPlayerValid()
+    public boolean isMediaPlayerValid()
     {
         return mMediaPlayerValid;
     }

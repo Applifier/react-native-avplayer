@@ -68,11 +68,18 @@ public class RCTAVPlayerLayer extends ScalableVideoView implements RCTAVPlayer.L
     @Override
     protected void onAttachedToWindow()
     {
-        mMediaPlayer = mAVPlayer.getMediaPlayer();
         super.onAttachedToWindow();
+        if (mAVPlayer != null)
+        {
+            mMediaPlayer = mAVPlayer.getMediaPlayer();
+        }
+        else
+        {
+            return;
+        }
 
         // To set the preview in the window
-        if (!mMediaPlayer.isPlaying())
+        if (mMediaPlayer != null && mAVPlayer.isMediaPlayerValid() && !mMediaPlayer.isPlaying())
         {
             mMediaPlayer.seekTo(50);
         }
@@ -102,7 +109,7 @@ public class RCTAVPlayerLayer extends ScalableVideoView implements RCTAVPlayer.L
     {
         mResizeMode = resizeMode;
 
-        if (mAVPlayer.getMediaPlayerValid())
+        if (mAVPlayer != null && mAVPlayer.isMediaPlayerValid())
         {
             Log.d(TAG, "setResizeModifier " + mAVPlayer);
             mThemedReactContext.runOnUiQueueThread(new Runnable()
@@ -112,7 +119,7 @@ public class RCTAVPlayerLayer extends ScalableVideoView implements RCTAVPlayer.L
                 {
                     // If mMediaPlayer becomes null when scrolling fast enough and this is not yet
                     // run.
-                    if (mMediaPlayer != null)
+                    if (mMediaPlayer != null && mAVPlayer.isMediaPlayerValid())
                     {
                         setScalableType(resizeMode);
                     }
