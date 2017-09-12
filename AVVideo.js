@@ -1,21 +1,19 @@
- /**
- * @providesModule AVVideo
- * @flow
- **/
+/**
+* @providesModule AVVideo
+* @flow
+**/
 
- 'use strict';
+'use strict';
 
- var _ = require('lodash');
- var ReactNative = require('react-native');
- var React = require('react');
- var {View} = ReactNative;
+var _ = require('lodash');
+var ReactNative = require('react-native');
+var React = require('react');
+var {View} = ReactNative;
 
- var AVVideo = React.createClass({
-   render: function() {
-     return (
-       <View />
-     );
-   }
- });
+function AVVideo () {
+  return (
+    <View />
+  );
+}
 
- module.exports = AVVideo;
+module.exports = AVVideo;

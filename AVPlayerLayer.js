@@ -9,14 +9,15 @@
 var ReactNative = require('react-native');
 var React = require('react');
 var { StyleSheet, requireNativeComponent, NativeModules, View } = ReactNative;
-var PropTypes = React.PropTypes;
+var PropTypes = require('prop-types');
+var createReactClass = require('create-react-class');
 
 var VideoResizeMode = require('./AVPlayerLayerResizeMode');
 var { extend } = require('lodash');
 
 var VIDEO_REF = 'video';
 
-var AVPlayerLayer = React.createClass({
+var AVPlayerLayer = createReactClass({
   propTypes: {
     ...View.propTypes,
     /* Wrapper component */
