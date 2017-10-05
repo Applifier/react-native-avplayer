@@ -26,9 +26,9 @@ public class RCTAVPlayerLayerModule extends SimpleViewManager<RCTAVPlayerLayer>
 
     @Override
     @Nullable
-    public Map getExportedViewConstants()
+    public Map<String, Object> getExportedViewConstants()
     {
-        return MapBuilder.of(
+        return MapBuilder.<String, Object>of(
                 "ScaleNone", Integer.toString(ScalableType.LEFT_TOP.ordinal()),
                 "ScaleToFill", Integer.toString(ScalableType.FIT_XY.ordinal()),
                 "ScaleAspectFit", Integer.toString(ScalableType.FIT_CENTER.ordinal()),
@@ -38,8 +38,8 @@ public class RCTAVPlayerLayerModule extends SimpleViewManager<RCTAVPlayerLayer>
 
     @Override
     @Nullable
-    public Map getExportedCustomDirectEventTypeConstants() {
-        MapBuilder.Builder builder = MapBuilder.builder();
+    public Map<String, Object> getExportedCustomDirectEventTypeConstants() {
+        MapBuilder.Builder builder = MapBuilder.<String, Object>builder();
         for (RCTAVPlayerLayer.Events event : RCTAVPlayerLayer.Events.values()) {
             builder.put(event.toString(), MapBuilder.of("registrationName", event.toString()));
         }
