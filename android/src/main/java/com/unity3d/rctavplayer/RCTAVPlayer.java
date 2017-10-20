@@ -244,6 +244,7 @@ public class RCTAVPlayer implements MediaPlayer.OnPreparedListener,
             WritableMap event = Arguments.createMap();
             event.putDouble(EVENT_PROP_CURRENT_TIME, mMediaPlayer.getCurrentPosition() / 1000.0);
             event.putDouble(EVENT_PROP_SEEK_TIME, msec / 1000.0);
+            event.putString(EVENT_PROP_TARGET, mUuid);
             mDeviceEventEmitter.emit(RCTAVPlayerLayer.Events.EVENT_SEEK.toString(), event);
 
             mMediaPlayer.seekTo(msec);
@@ -357,6 +358,7 @@ public class RCTAVPlayer implements MediaPlayer.OnPreparedListener,
         error.putInt(EVENT_PROP_EXTRA, extra);
         WritableMap event = Arguments.createMap();
         event.putMap(EVENT_PROP_ERROR, error);
+        event.putString(EVENT_PROP_TARGET, mUuid);
         mDeviceEventEmitter.emit(RCTAVPlayerLayer.Events.EVENT_ERROR.toString(), event);
         return true;
     }
