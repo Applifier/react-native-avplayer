@@ -98,6 +98,7 @@ public class RCTAVPlayer implements MediaPlayer.OnPreparedListener,
                     WritableMap event = Arguments.createMap();
                     event.putDouble(EVENT_PROP_CURRENT_TIME, mMediaPlayer.getCurrentPosition() / 1000.0);
                     event.putDouble(EVENT_PROP_PLAYABLE_DURATION, mVideoBufferedDuration / 1000.0); //TODO:mBufferUpdateRunnable
+                    event.putString(EVENT_PROP_TARGET, mUuid);
                     mDeviceEventEmitter.emit(RCTAVPlayerLayer.Events.EVENT_PROGRESS.toString(), event);
                 }
                 mProgressUpdateHandler.postDelayed(mProgressUpdateRunnable, 250);
