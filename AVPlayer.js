@@ -11,7 +11,8 @@ var NativeVideo = NativeModules.AVPlayer;
 var React = require('react-native');
 var EventEmitter = require('eventemitter3');
 var {
-  DeviceEventEmitter
+  DeviceEventEmitter,
+  Platform
 } = React;
 
 function guid() {
@@ -38,22 +39,23 @@ class AVPlayer extends EventEmitter {
     });
     this._loadListener = DeviceEventEmitter.addListener('onVideoLoad', (body) => {
       if (body.target === this.uuid) {
+        this._duration = body.duration;
         this.emit('load', body);
       }
     });
     this._errorListener = DeviceEventEmitter.addListener('onVideoError', (body) => {
-      if (body.target === this.uuid) {
+      if (body.target === this.uuid || this._errorEventMatchesOnAndroid(body)) {
         this.emit('error', body);
       }
     });
     this._progressListener = DeviceEventEmitter.addListener('onVideoProgress', (body) => {
-      if (body.target === this.uuid) {
+      if (body.target === this.uuid || this._progressEventMatchesOnAndroid(body)) {
         this._currentTime = body.currentTime;
         this.emit('progress', body);
       }
     });
     this._seekListener = DeviceEventEmitter.addListener('onVideoSeek', (body) => {
-      if (body.target === this.uuid) {
+      if (body.target === this.uuid || this._seekEventMatchesOnAndroid(body)) {
         this._currentTime = body.currentTime;
         this.emit('seek', body);
       }
@@ -68,6 +70,18 @@ class AVPlayer extends EventEmitter {
     this.repeat = true;
     this.muted = false,
     this._source = null;
+  }
+  // seek event is missing uuid on older versions on Android
+  _seekEventMatchesOnAndroid (body) {
+    return Platform.OS === 'android' && this._seekTime === body.seekTime;
+  }
+  // progress event is missing uuid on older versions on Android
+  _progressEventMatchesOnAndroid (body) {
+    return Platform.OS === 'android' && this._duration === body.playableDuration;
+  }
+  // error event is missing uuid on older versions on Android
+  _errorEventMatchesOnAndroid (body) {
+    return Platform.OS === 'android';
   }
   set source(source) {
     var uri = source.uri;
@@ -117,6 +131,7 @@ class AVPlayer extends EventEmitter {
     return this._rate;
   }
   set currentTime(seek) {
+    this._seekTime = seek;
     NativeVideo.setSeek(this.uuid, seek, function(err) {});
   }
   get currentTime() {
