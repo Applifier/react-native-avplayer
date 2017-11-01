@@ -136,7 +136,7 @@ public class RCTAVPlayerLayer extends ScalableVideoView implements RCTAVPlayer.L
     {
         mMediaPlayer = mediaPlayer;
 
-        if(mMediaPlayer != null && mAVPlayer != null && mAVPlayer.isMediaPlayerValid())
+        if (mMediaPlayer != null && mAVPlayer != null && mAVPlayer.isMediaPlayerValid())
         {
             setResizeModeModifier(mResizeMode);
         }
