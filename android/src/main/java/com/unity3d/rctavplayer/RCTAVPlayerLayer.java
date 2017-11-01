@@ -139,6 +139,13 @@ public class RCTAVPlayerLayer extends ScalableVideoView implements RCTAVPlayer.L
 
     public void setPlayerUuid(String uuid)
     {
+        if (mAVPlayer != null)
+        {
+            mAVPlayer.removeListener(this);
+            setPlayer(null);
+            mAVPlayer = null;
+        }
+
         Log.d(TAG, "Setting player with uuid " + uuid + " to layer " + this);
         RCTAVPlayer avPlayer = RCTAVPlayerModule.getPlayer(uuid);
         if (avPlayer == null)
@@ -149,8 +156,8 @@ public class RCTAVPlayerLayer extends ScalableVideoView implements RCTAVPlayer.L
 
         mAVPlayer = avPlayer;
 
-        MediaPlayer mp = avPlayer.getMediaPlayer();
+        MediaPlayer mp = mAVPlayer.getMediaPlayer();
         setPlayer(mp);
-        avPlayer.addListener(this);
+        mAVPlayer.addListener(this);
     }
 }

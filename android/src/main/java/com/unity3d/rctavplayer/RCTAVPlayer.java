@@ -331,6 +331,11 @@ public class RCTAVPlayer implements MediaPlayer.OnPreparedListener,
         mListeners.add(listener);
     }
 
+    public void removeListener(Listener listener)
+    {
+        mListeners.remove(listener);
+    }
+
     @Override
     public void onBufferingUpdate(MediaPlayer mp, int percent)
     {
