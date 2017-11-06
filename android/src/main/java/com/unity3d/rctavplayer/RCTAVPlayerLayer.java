@@ -96,7 +96,17 @@ public class RCTAVPlayerLayer extends ScalableVideoView implements RCTAVPlayer.L
     @Override
     public void onPrepared(RCTAVPlayer player)
     {
-        setResizeModeModifier(mResizeMode);
+        // Run this on the next UI frame, otherwise sometimes
+        // things break and the video appears black. This ugly hack
+        // seems to fix it.
+        post(new Runnable()
+        {
+            @Override
+            public void run()
+            {
+                setResizeModeModifier(mResizeMode);
+            }
+        });
     }
 
     @Override
