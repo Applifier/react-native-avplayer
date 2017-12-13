@@ -59,6 +59,21 @@ public class RCTAVPlayerLayer extends ScalableVideoView implements RCTAVPlayer.L
     }
 
     @Override
+    public void onSurfaceTextureAvailable(SurfaceTexture surfaceTexture, int width, int height)
+    {
+        try
+        {
+            super.onSurfaceTextureAvailable(surfaceTexture, width, height);
+        } catch (IllegalStateException e)
+        {
+            // This happens sometimes when the video view is attached but for some reason the media
+            // player is not valid. It causes a crash when a ScrollView with multiple video views is
+            // scrolled quickly.
+            Log.w(TAG, "Cannot set surface for media player. This is most probably harmless.");
+        }
+    }
+
+    @Override
     protected void onDetachedFromWindow()
     {
         mMediaPlayer = null;
