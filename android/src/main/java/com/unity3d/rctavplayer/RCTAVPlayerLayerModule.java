@@ -32,7 +32,8 @@ public class RCTAVPlayerLayerModule extends SimpleViewManager<RCTAVPlayerLayer>
                 "ScaleNone", Integer.toString(ScalableType.LEFT_TOP.ordinal()),
                 "ScaleToFill", Integer.toString(ScalableType.FIT_XY.ordinal()),
                 "ScaleAspectFit", Integer.toString(ScalableType.FIT_CENTER.ordinal()),
-                "ScaleAspectFill", Integer.toString(ScalableType.CENTER_CROP.ordinal())
+                "ScaleAspectFill", Integer.toString(ScalableType.CENTER_CROP.ordinal()),
+                "SdkHandlesSurfaceTextureError", true
         );
     }
 
