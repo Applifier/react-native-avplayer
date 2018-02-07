@@ -64,6 +64,7 @@ public class RCTAVPlayerLayer extends ScalableVideoView implements RCTAVPlayer.L
         try
         {
             super.onSurfaceTextureAvailable(surfaceTexture, width, height);
+            setResizeModeModifier(mResizeMode);
         } catch (IllegalStateException e)
         {
             // This happens sometimes when the video view is attached but for some reason the media
