@@ -298,6 +298,13 @@ public class RCTAVPlayer implements MediaPlayer.OnPreparedListener,
         {
             mMediaPlayer.setVolume(mVolume, mVolume);
         }
+
+        // To set the preview in the window
+        setPaused(false);
+        if (mRate == 0.0f)
+        {
+            setPaused(true);
+        }
     }
 
     public MediaPlayer getMediaPlayer()
@@ -322,6 +329,11 @@ public class RCTAVPlayer implements MediaPlayer.OnPreparedListener,
     public void addListener(Listener listener)
     {
         mListeners.add(listener);
+    }
+
+    public void removeListener(Listener listener)
+    {
+        mListeners.remove(listener);
     }
 
     @Override
@@ -392,9 +404,5 @@ public class RCTAVPlayer implements MediaPlayer.OnPreparedListener,
         {
             l.onPrepared(this);
         }
-
-        // To set the preview in the window
-        setPaused(false);
-        setPaused(true);
     }
 }

@@ -59,6 +59,21 @@ public class RCTAVPlayerLayer extends ScalableVideoView implements RCTAVPlayer.L
     }
 
     @Override
+    public void onSurfaceTextureAvailable(SurfaceTexture surfaceTexture, int width, int height)
+    {
+        try
+        {
+            super.onSurfaceTextureAvailable(surfaceTexture, width, height);
+        } catch (IllegalStateException e)
+        {
+            // This happens sometimes when the video view is attached but for some reason the media
+            // player is not valid. It causes a crash when a ScrollView with multiple video views is
+            // scrolled quickly.
+            Log.w(TAG, "Cannot set surface for media player. This is most probably harmless.");
+        }
+    }
+
+    @Override
     protected void onDetachedFromWindow()
     {
         mMediaPlayer = null;
@@ -96,7 +111,17 @@ public class RCTAVPlayerLayer extends ScalableVideoView implements RCTAVPlayer.L
     @Override
     public void onPrepared(RCTAVPlayer player)
     {
-        setResizeModeModifier(mResizeMode);
+        // Run this on the next UI frame, otherwise sometimes
+        // things break and the video appears black. This ugly hack
+        // seems to fix it.
+        post(new Runnable()
+        {
+            @Override
+            public void run()
+            {
+                setResizeModeModifier(mResizeMode);
+            }
+        });
     }
 
     @Override
@@ -135,10 +160,22 @@ public class RCTAVPlayerLayer extends ScalableVideoView implements RCTAVPlayer.L
     private void setPlayer(MediaPlayer mediaPlayer)
     {
         mMediaPlayer = mediaPlayer;
+
+        if (mMediaPlayer != null && mAVPlayer != null && mAVPlayer.isMediaPlayerValid())
+        {
+            setResizeModeModifier(mResizeMode);
+        }
     }
 
     public void setPlayerUuid(String uuid)
     {
+        if (mAVPlayer != null)
+        {
+            mAVPlayer.removeListener(this);
+            setPlayer(null);
+            mAVPlayer = null;
+        }
+
         Log.d(TAG, "Setting player with uuid " + uuid + " to layer " + this);
         RCTAVPlayer avPlayer = RCTAVPlayerModule.getPlayer(uuid);
         if (avPlayer == null)
@@ -149,8 +186,8 @@ public class RCTAVPlayerLayer extends ScalableVideoView implements RCTAVPlayer.L
 
         mAVPlayer = avPlayer;
 
-        MediaPlayer mp = avPlayer.getMediaPlayer();
+        MediaPlayer mp = mAVPlayer.getMediaPlayer();
         setPlayer(mp);
-        avPlayer.addListener(this);
+        mAVPlayer.addListener(this);
     }
 }
